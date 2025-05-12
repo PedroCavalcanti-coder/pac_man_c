@@ -1,0 +1,18 @@
+===================================
+|                                 |
+|          PAC-MAN EM C           |
+|                                 |
+===================================
+|                                 |
+|      1. INICIAR JOGO            |
+|      2. VER RANKING             |
+|      3. INSTRUCOES              |
+|      4. SAIR                    |
+|                                 |
+===================================
+|                                 |
+|   CONTROLES: W A S D            |
+|   OBJETIVO: COMA TODAS AS       |
+|   COMIDAS E FUJA DOS FANTASMAS! |
+|                                 |
+===================================
