@@ -5,7 +5,6 @@
 #include <conio.h> // Para getch() (Windows)
 #include <unistd.h> // Para sleep() (Linux)
 #include <windows.h> // Para Sleep() (Windows)
-#include "pacman.h"
 #include "menu.h"
 
 #define MAX_LINHAS 30
@@ -15,7 +14,7 @@ char mapa[MAX_LINHAS][MAX_COLUNAS];
 
 void locate()
 {
-    setlocale(LC_ALL,""); // Configura a localiza√ß√£o para o idioma padr√£o do sistema
+    setlocale(LC_ALL,""); // Configura a localizaÁ„o para o idioma padr„o do sistema
 }
 void drawing_map()
 {
@@ -38,7 +37,7 @@ void drawing_map()
 
     fclose(arquivo_mapa);
 
-    printf("Score: 0\n\n"); // Exibe a pontua√ß√£o (inicialmente 0)
+    printf("Score: 0\n\n"); // Exibe a pontuaÁ„o (inicialmente 0)
     // Exibir o mapa
     for (int i = 0; i < linhas; i++) {
         printf("%s\n", mapa[i]);
@@ -49,12 +48,12 @@ void drawing_map()
 
 void game_over()
 {
-    // Aqui voc√™ pode implementar a l√≥gica para o Game Over
+    // Aqui vocÍ pode implementar a lÛgica para o Game Over
     printf("Game Over!\n");
     printf("Pressione qualquer tecla para voltar ao menu...\n");
     getch(); // Aguarda a tecla pressionada
     system("cls"); // Limpa a tela (Windows)
-    menu(); // Chama a fun√ß√£o menu novamente
+    menu(); // Chama a funÁ„o menu novamente
 }
 void game_loop()
 {
@@ -63,18 +62,18 @@ void game_loop()
     {
         if(kbhit()) // Verifica se uma tecla foi pressionada
         {
-            opcao = getch(); // L√™ a tecla pressionada
+            opcao = getch(); // LÍ a tecla pressionada
             if(opcao == '0') // Se a tecla for '0', sai do loop
                 break;
         }
 
-        drawing_map(); // Chama a fun√ß√£o para desenhar o mapa
+        drawing_map(); // Chama a funÁ„o para desenhar o mapa
 
         Sleep(500); // Pausa por 100 milissegundos (Windows)
 
         system("cls"); // Limpa a tela (Windows)
 
-    } while(1); // Continua at√© que a tecla '0' seja pressionada
+    } while(1); // Continua atÈ que a tecla '0' seja pressionada
 
     system("cls"); // Limpa a tela (Windows)
     exit(0); // Sair do programa
@@ -83,10 +82,10 @@ void game_loop()
 
 int main()
 {
-    locate(); // Configura a localiza√ß√£o para o idioma padr√£o do sistema
+    locate(); // Configura a localizaÁ„o para o idioma padr„o do sistema
     //PlaySound("som.wav", NULL, SND_FILENAME | SND_ASYNC); // Reproduz o som de fundo
     system("color 0A"); // Muda a cor do texto para verde (Windows)
-    menu(); // Chama a fun√ß√£o menu
+    menu(); // Chama a funÁ„o menu
 
     return 0;
 }

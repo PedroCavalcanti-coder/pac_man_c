@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1747270656 source:c:\users\pedro\onedrive\documentos\pac_man_c\pacman\menu.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	<conio.h>
+	<unistd.h>
+	<windows.h>
+	"menu.h"
+
+1747270622 c:\users\pedro\onedrive\documentos\pac_man_c\pacman\menu.h
+
+1747270929 source:c:\users\pedro\onedrive\documentos\pac_man_c\pacman\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	<conio.h>
+	<unistd.h>
+	<windows.h>
+	"menu.h"
+
