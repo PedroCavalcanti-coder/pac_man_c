@@ -21,3 +21,79 @@
 	<windows.h>
 	"menu.h"
 
+1747333334 source:c:\users\unicafe\documents\pac_man_c-main\pacman\menu.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	<conio.h>
+	<unistd.h>
+	<windows.h>
+	"menu.h"
+
+1747274309 c:\users\unicafe\documents\pac_man_c-main\pacman\menu.h
+
+1747333498 source:c:\users\unicafe\documents\pac_man_c-main\pacman\game.c
+	<stdio.h>
+	"game.h"
+
+1747333332 c:\users\unicafe\documents\pac_man_c-main\pacman\game.h
+
+1747333498 source:c:\users\unicafe\documents\pac_man_c-main\pacman\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	<conio.h>
+	<unistd.h>
+	<windows.h>
+	"menu.h"
+	"game.h"
+
+1747333770 source:c:\users\pedro\onedrive\documentos\pac_man_c\pac_man_c-main\pacman\ghost.c
+	<stdio.h>
+	"pacman.h"
+
+1747599768 c:\users\pedro\onedrive\documentos\pac_man_c\pac_man_c-main\pacman\pacman.h
+
+1747534517 source:c:\users\pedro\onedrive\documentos\pac_man_c\pac_man_c-main\pacman\main.c
+	<stdio.h>
+	"game.h"
+	"pacman.h"
+	"ghost.h"
+	"menu.h"
+
+1747599768 c:\users\pedro\onedrive\documentos\pac_man_c\pac_man_c-main\pacman\game.h
+
+1747333441 c:\users\pedro\onedrive\documentos\pac_man_c\pac_man_c-main\pacman\ghost.h
+
+1747274309 c:\users\pedro\onedrive\documentos\pac_man_c\pac_man_c-main\pacman\menu.h
+
+1747598292 source:c:\users\pedro\onedrive\documentos\pac_man_c\pac_man_c-main\pacman\pacman.c
+	<stdio.h>
+	"pacman.h"
+	"game.h"
+
+1747599768 source:c:\users\pedro\onedrive\documentos\pac_man_c\pac_man_c-main\pacman\game.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	<conio.h>
+	<unistd.h>
+	<windows.h>
+	"game.h"
+	"menu.h"
+	"pacman.h"
+
+1747597214 source:c:\users\pedro\onedrive\documentos\pac_man_c\pac_man_c-main\pacman\menu.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	<conio.h>
+	<unistd.h>
+	<windows.h>
+	"game.h"
+	"menu.h"
+

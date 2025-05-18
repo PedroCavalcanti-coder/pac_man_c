@@ -5,23 +5,20 @@
 #include <conio.h> // Para getch() (Windows)
 #include <unistd.h> // Para sleep() (Linux)
 #include <windows.h> // Para Sleep() (Windows)
+#include "game.h"
 #include "menu.h"
-
-#define MAX_LINHAS 30
-#define MAX_COLUNAS 50
-
 
 void menu()
 {
+    char menu[MAX_COLUNAS][MAX_LINHAS];
 
     FILE *arquivo_menu;
-    char menu[MAX_LINHAS][MAX_COLUNAS];
     int linhas = 0;
     arquivo_menu = fopen("../menu.txt", "r");
 
     if (arquivo_menu == NULL) {
         perror("Erro ao abrir o arquivo_menu");
-        exit(EXIT_FAILURE);
+        exit(0);
     }
 
     while (fgets(menu[linhas], MAX_COLUNAS, arquivo_menu) != NULL) {
@@ -59,16 +56,9 @@ void menu()
 
         case '4':
             system("cls");
-            //exit(0); // Sair do programa
-            system("exit");// Sair do programa
+            exit(0); // Sair do programa
     }
 
-}
-void start_game()
-{
-    //char opcao;
-
-    //game_loop(); // Chama a função para o loop do jogo
 }
 void instruct()
 {
@@ -88,28 +78,6 @@ void instruct()
     getch(); // Aguarda a tecla pressionada
     system("cls"); // Limpa a tela (Windows)
     menu(); // Chama a função menu novamente
-}
-int ranking()
-{
-    // Aqui você pode implementar a lógica para abrir o ranking
-    FILE *arquivo_ranking;
-    char ranking[20];
-
-    arquivo_ranking = fopen("../ranking.txt", "r");
-    if (arquivo_ranking == NULL) {
-        perror("Erro ao abrir o arquivo_ranking");
-        exit(EXIT_FAILURE);
-    }
-
-    // Exibir o ranking
-    while (fgets(ranking, sizeof(ranking), arquivo_ranking) != NULL) {
-        // Remove o caractere de nova linha '\n'
-        ranking[strcspn(ranking, "\n")] = '\0';
-    }
-
-    fclose(arquivo_ranking);
-
-    return atoi(ranking); // Retorna a pontuação do ranking
 }
 void open_ranking(int pontuacao)
 {
