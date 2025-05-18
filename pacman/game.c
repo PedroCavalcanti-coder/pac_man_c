@@ -28,7 +28,7 @@ void inicializa_mapa() {
 
     int linhas = 0;
 
-    FILE *arquivo_mapa = fopen("../mapa.txt", "r");
+    FILE *arquivo_mapa = fopen("mapa.txt", "r");
 
     if (arquivo_mapa == NULL) {
         perror("Erro ao abrir o arquivo_mapa");
@@ -43,7 +43,7 @@ void inicializa_mapa() {
 
     fclose(arquivo_mapa);
 
-    //printf("%d", linhas); //Operação de Debug
+    //printf("%d", linhas); //Operaï¿½ï¿½o de Debug
 
 }
 
@@ -70,11 +70,11 @@ void write_ranking(int score) {
 }
 int ranking()
 {
-    // Aqui você pode implementar a lógica para abrir o ranking
+    // Aqui vocï¿½ pode implementar a lï¿½gica para abrir o ranking
     FILE *arquivo_ranking;
     char ranking[20];
 
-    arquivo_ranking = fopen("../ranking.txt", "r");
+    arquivo_ranking = fopen("ranking.txt", "r");
     if (arquivo_ranking == NULL) {
         perror("Erro ao abrir o arquivo_ranking");
         exit(EXIT_FAILURE);
@@ -88,27 +88,27 @@ int ranking()
 
     fclose(arquivo_ranking);
 
-    return atoi(ranking); // Retorna a pontuação do ranking
+    return atoi(ranking); // Retorna a pontuaï¿½ï¿½o do ranking
 }
 void start_game()
 {
     inicializa_mapa();
-    game_loop(); // Chama a função para o loop do jogo
+    game_loop(); // Chama a funï¿½ï¿½o para o loop do jogo
 }
 void game_loop()
 {
     char opcao = ' ';
     // Loop infinito para o jogo
-    while(1) // Continua até que a tecla '0' seja pressionada
+    while(1) // Continua atï¿½ que a tecla '0' seja pressionada
     {
-        drawing_map(); // Chama a função para desenhar o mapa
-        printf("\t\tScore: %d", score); // Exibe a pontuação (inicialmente 0)
+        drawing_map(); // Chama a funï¿½ï¿½o para desenhar o mapa
+        printf("\t\tScore: %d", score); // Exibe a pontuaï¿½ï¿½o (inicialmente 0)
 
         player_move();
 
         if(kbhit()) // Verifica se uma tecla foi pressionada
         {
-            opcao = getch(); // Lê a tecla pressionada
+            opcao = getch(); // Lï¿½ a tecla pressionada
             if(opcao == '0') // Se a tecla for '0', sai do loop
                 break;
         }
@@ -128,12 +128,12 @@ void game_loop()
 }
 void gamo_over()
 {
-    // Aqui você pode implementar a lógica para o Game Over
+    // Aqui vocï¿½ pode implementar a lï¿½gica para o Game Over
     printf("Game Over!\n");
     printf("Pressione qualquer tecla para voltar ao menu...\n");
     getch(); // Aguarda a tecla pressionada
     system("cls"); // Limpa a tela (Windows)
-    menu(); // Chama a função menu novamente
+    menu(); // Chama a funï¿½ï¿½o menu novamente
 }
 void locate()
 {

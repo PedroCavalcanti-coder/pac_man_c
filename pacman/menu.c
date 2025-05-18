@@ -14,7 +14,7 @@ void menu()
 
     FILE *arquivo_menu;
     int linhas = 0;
-    arquivo_menu = fopen("../menu.txt", "r");
+    arquivo_menu = fopen("menu.txt", "r");
 
     if (arquivo_menu == NULL) {
         perror("Erro ao abrir o arquivo_menu");
@@ -45,13 +45,13 @@ void menu()
 
         case '3':
             system("cls"); // Limpa a tela (Windows)
-            instruct(); // Chama a função para mostrar as instruções
+            instruct(); // Chama a funï¿½ï¿½o para mostrar as instruï¿½ï¿½es
             break;
-            // Aqui você pode chamar a função para mostrar as instruções
+            // Aqui vocï¿½ pode chamar a funï¿½ï¿½o para mostrar as instruï¿½ï¿½es
 
         case '2':
             system("cls"); // Limpa a tela (Windows)
-            open_ranking(ranking()); // Chama a função para abrir o ranking
+            open_ranking(ranking()); // Chama a funï¿½ï¿½o para abrir o ranking
             break;
 
         case '4':
@@ -70,14 +70,14 @@ void instruct()
     printf("  D - Mover para direita\n");
     printf("Objetivo:\n");
     printf("  Colete todos os pontos (.) e evite os fantasmas (G)!\n");
-    printf("  Você é o Pac-Man (P).\n");
+    printf("  Vocï¿½ ï¿½ o Pac-Man (P).\n");
     printf("=============================\n\n");
 
 
     printf("Pressione qualquer tecla para voltar ao menu...\n");
     getch(); // Aguarda a tecla pressionada
     system("cls"); // Limpa a tela (Windows)
-    menu(); // Chama a função menu novamente
+    menu(); // Chama a funï¿½ï¿½o menu novamente
 }
 void open_ranking(int pontuacao)
 {
@@ -86,5 +86,5 @@ void open_ranking(int pontuacao)
     printf("\nPressione qualquer tecla para voltar ao menu...\n");
     getch(); // Aguarda a tecla pressionada
     system("cls"); // Limpa a tela (Windows)
-    menu(); // Chama a função menu novamente
+    menu(); // Chama a funï¿½ï¿½o menu novamente
 }
