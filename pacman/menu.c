@@ -8,6 +8,15 @@
 #include "game.h"
 #include "menu.h"
 
+
+#include <windows.h>
+#include <mmsystem.h>
+
+#define YELLOW      "\033[33m"
+#define PURPLE      "\033[35m"
+#define GREEN       "\033[0;32m"
+
+
 void menu()
 {
     char menu[MAX_COLUNAS][MAX_LINHAS];
@@ -29,7 +38,21 @@ void menu()
 
     fclose(arquivo_menu);
 
+
+    printf(YELLOW);
+    printf(" ######     ###      ######           ##   ##     ###     ##    #       ****** \n");
+    printf(" #     #   #   #    #                # # # #    #   #    # #   #     ** ** \n");
+    printf(" #     #  #     #   #         ----   #  #  #   #     #   #  #  #    * * \n");
+    printf(" ######   #######   #         ----   #     #   #######   #   # #       * > \n");
+    printf(" #        #     #   #                #     #   #     #   #    ##     * * \n");
+    printf(" #        #     #   #                #     #   #     #   #     #      ** ** \n");
+    printf(" #        #     #    ######          #     #   #     #   #     #      ****** \n");
+
+    printf(PURPLE);
+    printf("\nCriado por Pedro H. Silva Cavalcanti\n\n");
+
     // Exibir o menu
+    printf(GREEN);
     for (int i = 0; i < linhas; i++) {
         printf("%s\n", menu[i]);
     }
@@ -39,6 +62,8 @@ void menu()
     opcao = getch(); // Aguarda a tecla pressionada
     switch (opcao) {
         case '1':
+            // Para a música
+            PlaySound(NULL, 0, 0);
             system("cls"); // Limpa a tela (Windows)
             start_game();
             break;
@@ -55,6 +80,8 @@ void menu()
             break;
 
         case '4':
+            // Para a música
+            PlaySound(NULL, 0, 0);
             system("cls");
             exit(0); // Sair do programa
     }
@@ -70,7 +97,7 @@ void instruct()
     printf("  D - Mover para direita\n");
     printf("Objetivo:\n");
     printf("  Colete todos os pontos (.) e evite os fantasmas (G)!\n");
-    printf("  Voc� � o Pac-Man (P).\n");
+    printf("  Você ê o Pac-Man (P).\n");
     printf("=============================\n\n");
 
 

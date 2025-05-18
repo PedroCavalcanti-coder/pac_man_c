@@ -1,5 +1,6 @@
 #include <stdio.h>
-
+#include <windows.h>
+#include <mmsystem.h>
 #include "game.h"
 #include "pacman.h"
 #include "ghost.h"
@@ -8,7 +9,8 @@
 int main()
 {
     locate(); // Configura a localização para o idioma padrão do sistema
-    //PlaySound("som.wav", NULL, SND_FILENAME | SND_ASYNC); // Reproduz o som de fundo
+    // Toca o som de forma assíncrona (continua executando o resto do código)
+    PlaySound("./playing-pac-man.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
     system("color 0A"); // Muda a cor do texto para verde (Windows)
     menu(); // Chama a função menu
 
