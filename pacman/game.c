@@ -3,7 +3,6 @@
 #include <string.h>  // Para strlen()
 #include <locale.h>  // Para setlocale()
 #include <conio.h>   // Para getch() (Windows)
-#include <unistd.h>  // Para sleep() (Linux)
 #include <windows.h> // Para Sleep() (Windows)
 #include "game.h"
 #include "menu.h"
@@ -16,18 +15,54 @@
 #define DARK_BLUE "\x1b[34m" // Azul escuro
 // #define RESET "\x1b[0m"
 
-#define RED          "\x1b[31m"
-#define PINK         "\x1b[35m"
-#define CYAN         "\x1b[36m"
-#define ORANGE       "\x1b[38;5;208m"
+#define RED "\x1b[31m"
+#define PINK "\x1b[35m"
+#define CYAN "\x1b[36m"
+#define ORANGE "\x1b[38;5;208m"
 
 extern int MAX_COLUNAS = 50;
 extern int MAX_LINHAS = 40;
 char **mapa = NULL;
 int **score = NULL;
 
+// Função para ajustar o tamanho da janela do console
+void setConsoleSize(int width, int height)
+{
+    HWND console = GetConsoleWindow();
+    RECT r;
+    GetWindowRect(console, &r);
+
+    // width e height aqui são em pixels aproximados; ajuste conforme necessário
+    // Cada caractere no console normalmente é 8x16 pixels (depende da fonte)
+    int charWidth = 9;   // Aproximação da largura de um caractere em pixels
+    int charHeight = 16; // Aproximação da altura de um caractere em pixels
+
+    MoveWindow(console, r.left, r.top, width * charWidth, height * charHeight, TRUE);
+}
+
+// Função para ajustar o tamanho do buffer do console
+void setConsoleBufferSize(int width, int height)
+{
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD newSize = {(SHORT)width, (SHORT)height};
+    SetConsoleScreenBufferSize(hOut, newSize);
+}
+
+void limparTela()
+{
+    COORD coord = {0, 0};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
 void inicializa_mapa()
 {
+    // Ajusta buffer e janela para o tamanho do mapa + margem
+    int margem_largura = 5;
+    int margem_altura = 5;
+
+    setConsoleBufferSize(MAX_COLUNAS + margem_largura, MAX_LINHAS + margem_altura);
+    setConsoleSize(MAX_COLUNAS + margem_largura, MAX_LINHAS + margem_altura);
+
     mapa = malloc(MAX_LINHAS * sizeof(char *));
     for (int i = 0; i < MAX_LINHAS; i++)
     {
@@ -55,11 +90,13 @@ void inicializa_mapa()
         // Remove o caractere de nova linha '\n'
         mapa[linhas][strcspn(mapa[linhas], "\n")] = '\0';
         linhas++;
+        if (linhas >= MAX_LINHAS)
+            break; // evita overflow
     }
 
     fclose(arquivo_mapa);
 
-    // printf("%d", linhas); //Opera��o de Debug
+    // printf("%d", linhas); //Operação de Debug
 }
 
 void libera_mapa()
@@ -70,9 +107,10 @@ void libera_mapa()
     }
     free(mapa);
 }
+
 void drawing_map()
 {
-    for (int i = 0; i < MAX_LINHAS - 5; i++)
+    for (int i = 0; i < MAX_LINHAS - 8; i++)
     {
         printf("\t"); // Tab para centralizar horizontalmente
         for (int j = 0; mapa[i][j] != '\0'; j++)
@@ -101,6 +139,7 @@ void drawing_map()
     }
     printf(GREEN); // Garante que tudo volte ao normal depois
 }
+
 void write_ranking(int score)
 {
     FILE *arquivo = fopen("ranking.txt", "w");
@@ -114,9 +153,10 @@ void write_ranking(int score)
         printf("Erro ao salvar ranking!\n");
     }
 }
+
 int ranking()
 {
-    // Aqui voc� pode implementar a l�gica para abrir o ranking
+    // Aqui você pode implementar a lógica para abrir o ranking
     FILE *arquivo_ranking;
     char ranking[20];
 
@@ -124,7 +164,7 @@ int ranking()
     if (arquivo_ranking == NULL)
     {
         perror("Erro ao abrir o arquivo_ranking");
-        exit(EXIT_FAILURE);
+        exit(0);
     }
 
     // Exibir o ranking
@@ -136,51 +176,54 @@ int ranking()
 
     fclose(arquivo_ranking);
 
-    return atoi(ranking); // Retorna a pontua��o do ranking
+    return atoi(ranking); // Retorna a pontuação do ranking
 }
+
 void start_game()
 {
     inicializa_mapa();
-    game_loop(); // Chama a fun��o para o loop do jogo
+    game_loop(); // Chama a função para o loop do jogo
 }
+
 void game_loop()
 {
     char opcao = ' ';
     // Loop infinito para o jogo
-    while (1) // Continua at� que a tecla '0' seja pressionada
+    while (1) // Continua até que a tecla '0' seja pressionada
     {
-        drawing_map(); // Chama a fun��o para desenhar o mapa
-        printf(YELLOW);
-        printf("\t\tScore: %d", score); // Exibe a pontua��o (inicialmente 0)
-        printf(GREEN);
 
         player_move();
-
         if (kbhit()) // Verifica se uma tecla foi pressionada
         {
-            opcao = getch();  // L� a tecla pressionada
+            opcao = getch();  // Lê a tecla pressionada
             if (opcao == '0') // Se a tecla for '0', sai do loop
                 break;
         }
 
-        Sleep(500);
+        limparTela();
+        drawing_map(); // Chama a função para desenhar o mapa
+        printf(YELLOW);
+        printf("\t\tScore: %d", score); // Exibe a pontuação (inicialmente 0)
+        printf(GREEN);
 
-        system("cls"); // Limpa a tela (Windows)
+        Sleep(300);
     }
 
-    system("cls");  // Limpa a tela (Windows)
+    limparTela();   // Limpa a tela (Windows)
     exit(0);        // Sair do programa
     system("exit"); // Sair do programa
 }
+
 void gamo_over()
 {
-    // Aqui voc� pode implementar a l�gica para o Game Over
+    // Aqui você pode implementar a lógica para o Game Over
     printf("Game Over!\n");
     printf("Pressione qualquer tecla para voltar ao menu...\n");
     getch();       // Aguarda a tecla pressionada
     system("cls"); // Limpa a tela (Windows)
-    menu();        // Chama a fun��o menu novamente
+    menu();        // Chama a função menu novamente
 }
+
 void locate()
 {
     setlocale(LC_ALL, "Portuguese");

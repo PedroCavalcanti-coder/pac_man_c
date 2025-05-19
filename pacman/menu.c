@@ -1,21 +1,20 @@
 #include <stdio.h>
-#include <stdlib.h> // Para system("cls") (Linux/Windows)
-#include <string.h> // Para strlen()
-#include <locale.h> // Para setlocale()
-#include <conio.h> // Para getch() (Windows)
-#include <unistd.h> // Para sleep() (Linux)
+#include <stdlib.h>  // Para system("cls") (Linux/Windows)
+#include <string.h>  // Para strlen()
+#include <locale.h>  // Para setlocale()
+#include <conio.h>   // Para getch() (Windows)
+#include <unistd.h>  // Para sleep() (Linux)
 #include <windows.h> // Para Sleep() (Windows)
 #include "game.h"
 #include "menu.h"
 
-
 #include <windows.h>
 #include <mmsystem.h>
 
-#define YELLOW      "\033[33m"
-#define PURPLE      "\033[35m"
-#define GREEN       "\033[0;32m"
-
+#define YELLOW "\033[33m"
+#define PURPLE "\033[35m"
+#define GREEN "\033[0;32m"
+#define RED "\x1b[31m"
 
 void menu()
 {
@@ -25,12 +24,14 @@ void menu()
     int linhas = 0;
     arquivo_menu = fopen("menu.txt", "r");
 
-    if (arquivo_menu == NULL) {
+    if (arquivo_menu == NULL)
+    {
         perror("Erro ao abrir o arquivo_menu");
         exit(0);
     }
 
-    while (fgets(menu[linhas], MAX_COLUNAS, arquivo_menu) != NULL) {
+    while (fgets(menu[linhas], MAX_COLUNAS, arquivo_menu) != NULL)
+    {
         // Remove o caractere de nova linha '\n'
         menu[linhas][strcspn(menu[linhas], "\n")] = '\0';
         linhas++;
@@ -38,54 +39,57 @@ void menu()
 
     fclose(arquivo_menu);
 
-
     printf(YELLOW);
-    printf(" ######     ###      ######           ##   ##     ###     ##    #       ****** \n");
-    printf(" #     #   #   #    #                # # # #    #   #    # #   #     ** ** \n");
-    printf(" #     #  #     #   #         ----   #  #  #   #     #   #  #  #    * * \n");
-    printf(" ######   #######   #         ----   #     #   #######   #   # #       * > \n");
-    printf(" #        #     #   #                #     #   #     #   #    ##     * * \n");
-    printf(" #        #     #   #                #     #   #     #   #     #      ** ** \n");
-    printf(" #        #     #    ######          #     #   #     #   #     #      ****** \n");
+    printf("\t ######     ###      ######           ##   ##     ###     ##    #       ****** \n");
+    printf("\t #     #   #   #    #                # # # #    #   #    # #   #     ** ** \n");
+    printf("\t #     #  #     #   #         ----   #  #  #   #     #   #  #  #    * * \n");
+    printf("\t ######   #######   #         ----   #     #   #######   #   # #       * > \n");
+    printf("\t #        #     #   #                #     #   #     #   #    ##     * * \n");
+    printf("\t #        #     #   #                #     #   #     #   #     #      ** ** \n");
+    printf("\t #        #     #    ######          #     #   #     #   #     #      ****** \n");
 
     printf(PURPLE);
-    printf("\nCriado por Pedro H. Silva Cavalcanti\n\n");
+    printf("\n\tCriado por Pedro H. Silva Cavalcanti\n\n");
 
     // Exibir o menu
     printf(GREEN);
-    for (int i = 0; i < linhas; i++) {
-        printf("%s\n", menu[i]);
+    for (int i = 0; i < linhas; i++)
+    {
+        printf("\t%s\n", menu[i]);
     }
+
+    printf(RED);
+    printf("\n\tAVISO: JOGE EM TELA CHEIA PARA EVITAR BUGS!\n\n");
 
     char opcao;
 
     opcao = getch(); // Aguarda a tecla pressionada
-    switch (opcao) {
-        case '1':
-            // Para a música
-            PlaySound(NULL, 0, 0);
-            system("cls"); // Limpa a tela (Windows)
-            start_game();
-            break;
+    switch (opcao)
+    {
+    case '1':
+        // Para a música
+        PlaySound(NULL, 0, 0);
+        system("cls"); // Limpa a tela (Windows)
+        start_game();
+        break;
 
-        case '3':
-            system("cls"); // Limpa a tela (Windows)
-            instruct(); // Chama a fun��o para mostrar as instru��es
-            break;
-            // Aqui voc� pode chamar a fun��o para mostrar as instru��es
+    case '3':
+        system("cls"); // Limpa a tela (Windows)
+        instruct();    // Chama a fun��o para mostrar as instru��es
+        break;
+        // Aqui voc� pode chamar a fun��o para mostrar as instru��es
 
-        case '2':
-            system("cls"); // Limpa a tela (Windows)
-            open_ranking(ranking()); // Chama a fun��o para abrir o ranking
-            break;
+    case '2':
+        system("cls");           // Limpa a tela (Windows)
+        open_ranking(ranking()); // Chama a fun��o para abrir o ranking
+        break;
 
-        case '4':
-            // Para a música
-            PlaySound(NULL, 0, 0);
-            system("cls");
-            exit(0); // Sair do programa
+    case '4':
+        // Para a música
+        PlaySound(NULL, 0, 0);
+        system("cls");
+        exit(0); // Sair do programa
     }
-
 }
 void instruct()
 {
@@ -100,18 +104,17 @@ void instruct()
     printf("  Você ê o Pac-Man (P).\n");
     printf("=============================\n\n");
 
-
     printf("Pressione qualquer tecla para voltar ao menu...\n");
-    getch(); // Aguarda a tecla pressionada
+    getch();       // Aguarda a tecla pressionada
     system("cls"); // Limpa a tela (Windows)
-    menu(); // Chama a fun��o menu novamente
+    menu();        // Chama a fun��o menu novamente
 }
 void open_ranking(int pontuacao)
 {
     printf("===== RANKING =====\n");
     printf("1. Jogador1 - %d pontos\n", pontuacao);
     printf("\nPressione qualquer tecla para voltar ao menu...\n");
-    getch(); // Aguarda a tecla pressionada
+    getch();       // Aguarda a tecla pressionada
     system("cls"); // Limpa a tela (Windows)
-    menu(); // Chama a fun��o menu novamente
+    menu();        // Chama a fun��o menu novamente
 }

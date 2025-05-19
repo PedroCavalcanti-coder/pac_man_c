@@ -28,12 +28,16 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="winmm" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Linker>
+			<Add library="winmm" />
+		</Linker>
 		<Unit filename="game.c">
 			<Option compilerVar="CC" />
 		</Unit>

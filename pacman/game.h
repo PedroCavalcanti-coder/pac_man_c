@@ -6,6 +6,7 @@ extern int MAX_LINHAS;
 extern char **mapa;
 extern int **score;
 
+void limparTela();
 void inicializa_mapa();
 void libera_mapa();
 void start_game();
