@@ -1,12 +1,14 @@
 #include <stdio.h>
-#include <stdlib.h>  // Para system("cls") (Linux/Windows)
-#include <string.h>  // Para strlen()
-#include <locale.h>  // Para setlocale()
-#include <conio.h>   // Para getch() (Windows)
-#include <windows.h> // Para Sleep() (Windows)
+#include <stdlib.h>   // Para system("cls") (Linux/Windows)
+#include <string.h>   // Para strlen()
+#include <locale.h>   // Para setlocale()
+#include <conio.h>    // Para getch() (Windows)
+#include <windows.h>  // Para Sleep() (Windows)
+#include <mmsystem.h> // Para PlaySound()
 #include "game.h"
 #include "menu.h"
 #include "pacman.h"
+#include "ghost.h"
 
 // Definições de cores ANSI
 #define GREEN "\x1b[32m"
@@ -192,6 +194,7 @@ void game_loop()
     while (1) // Continua até que a tecla '0' seja pressionada
     {
 
+        ghost(); // Chama a função para o fantasma
         player_move();
         if (kbhit()) // Verifica se uma tecla foi pressionada
         {

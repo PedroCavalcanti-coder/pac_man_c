@@ -2,6 +2,7 @@
 #define GHOST_H_INCLUDED
 
 void ghost();
+void ghost_move();
 void pink();
 void red();
 void cyan();

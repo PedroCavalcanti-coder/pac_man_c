@@ -14,7 +14,7 @@ void get_score()
 void power_up()
 {
     // L�gica para ativar power-up
-    printf("Power-up ativado!\n");
+    // printf("Power-up ativado!\n");
     score += 56;
     if (score > ranking())
         write_ranking(score);
