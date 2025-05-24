@@ -5,6 +5,7 @@
 #include <conio.h>    // Para getch() (Windows)
 #include <windows.h>  // Para Sleep() (Windows)
 #include <mmsystem.h> // Para PlaySound()
+#include <stdbool.h>  // Para o tipo boolean
 #include "game.h"
 #include "menu.h"
 #include "pacman.h"
@@ -25,7 +26,8 @@
 extern int MAX_COLUNAS = 50;
 extern int MAX_LINHAS = 40;
 char **mapa = NULL;
-int **score = NULL;
+int *score = NULL;
+int *bool_game_over = 1;
 
 // Função para ajustar o tamanho da janela do console
 void setConsoleSize(int width, int height)
@@ -129,7 +131,14 @@ void drawing_map()
                 printf(YELLOW);
                 break;
             case '@':
-                printf(RED);
+                if (verifica_power_up())
+                {
+                    printf(DARK_BLUE);
+                }
+                else
+                {
+                    printf(RED);
+                }
                 break;
             default:
                 printf(GREEN);
@@ -191,10 +200,17 @@ void game_loop()
 {
     char opcao = ' ';
     // Loop infinito para o jogo
-    while (1) // Continua até que a tecla '0' seja pressionada
+    while (bool_game_over) // Continua até que a tecla '0' seja pressionada
     {
+        if (verifica_power_up())
+        {
+            ghost_escape(); // Chama a função para o fantasma
+        }
+        else
+        {
+            red(); // Chama a função para o fantasma
+        }
 
-        ghost(); // Chama a função para o fantasma
         player_move();
         if (kbhit()) // Verifica se uma tecla foi pressionada
         {
@@ -217,9 +233,16 @@ void game_loop()
     system("exit"); // Sair do programa
 }
 
-void gamo_over()
+void game_over()
 {
-    // Aqui você pode implementar a lógica para o Game Over
+    bool_game_over = 0; // Define game_over como verdadeiro
+
+    PlaySound("./pacman-is-dead.wav", NULL, SND_FILENAME | SND_ASYNC);
+
+    Sleep(3000);           // Aguarda 3 segundos
+    PlaySound(NULL, 0, 0); // Para a música
+
+    system("cls"); // Limpa a tela (Windows)
     printf("Game Over!\n");
     printf("Pressione qualquer tecla para voltar ao menu...\n");
     getch();       // Aguarda a tecla pressionada

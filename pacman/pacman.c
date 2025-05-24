@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <conio.h> // Para kbhit() e getch() no Windows
+#include <time.h>
+#include <stdbool.h>
 #include "pacman.h"
+#include "ghost.h"
 #include "game.h"
+
+bool bool_power_up = false;
+clock_t power_up_start_time;
 
 void get_score()
 {
@@ -13,17 +19,26 @@ void get_score()
 
 void power_up()
 {
-    // L�gica para ativar power-up
-    // printf("Power-up ativado!\n");
     score += 56;
     if (score > ranking())
         write_ranking(score);
+
+    bool_power_up = true;
+    power_up_start_time = clock(); // salva o tempo que o power-up começou
 }
 
-void kill()
+int verifica_power_up()
 {
-    // L�gica para ser morto ou perder vida
-    printf("Voc� foi pego!\n");
+    if (bool_power_up)
+    {
+        double segundos = (double)(clock() - power_up_start_time) / CLOCKS_PER_SEC;
+        if (segundos >= 10.0)
+        {
+            bool_power_up = false;
+            return 0; // power-up expirado
+        }
+        return 1; // power-up ativo
+    }
 }
 
 // Variáveis globais para armazenar a última direção
@@ -95,11 +110,6 @@ void player_move()
                 break;
             case 'o':
                 power_up();
-                mapa[ny][nx] = 'C';
-                mapa[posy][posx] = ' ';
-                break;
-            case '@':
-                kill();
                 mapa[ny][nx] = 'C';
                 mapa[posy][posx] = ' ';
                 break;

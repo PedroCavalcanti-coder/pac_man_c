@@ -2,10 +2,9 @@
 #define GHOST_H_INCLUDED
 
 void ghost();
-void ghost_move();
-void pink();
+void ghost_escape();
 void red();
-void cyan();
-void orange();
+void pink();
+void ghost_move(int novo_py, int novo_px);
 
 #endif // GHOST_H_INCLUDED

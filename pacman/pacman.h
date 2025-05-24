@@ -3,7 +3,7 @@
 
 void get_score();
 void power_up();
-void kill();
+int verifica_power_up();
 void player_move();
 
 #endif // PACMAN_H_INCLUDED

@@ -1,22 +1,43 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
 #include "pacman.h"
 #include "game.h"
+#include "ghost.h"
 
-// Defini��es de cor ANSI
 #define RESET "\x1b[0m"
 #define RED "\x1b[31m"
 #define PINK "\x1b[35m"
 #define CYAN "\x1b[36m"
 #define ORANGE "\x1b[38;5;208m"
 
+// Posições globais
 int py_anterior = -1, px_anterior = -1;
-int py_futuro = -1, px_futuro = -1;
 int py = -1, px = -1;
 int py_pacman = -1, px_pacman = -1;
 
+void ghost_move(int novo_py, int novo_px)
+{
+    if (py_anterior == -1 || px_anterior == -1)
+        mapa[py][px] = ' ';
+    else
+        mapa[py][px] = mapa[novo_py][novo_px];
+
+    mapa[novo_py][novo_px] = '@';
+    py_anterior = py;
+    px_anterior = px;
+    py = novo_py;
+    px = novo_px;
+}
+
 void ghost()
 {
-    // Localiza a posição atual do Pac-Man ('C')
+    // Comportamento genérico (vazio por enquanto)
+}
+
+void ghost_escape()
+{
     for (int i = 0; i < MAX_LINHAS - 8; i++)
     {
         for (int j = 0; mapa[i][j] != '\0'; j++)
@@ -26,13 +47,6 @@ void ghost()
                 py_pacman = i;
                 px_pacman = j;
             }
-        }
-    }
-    // Localiza a posição atual do fantasma ('@')
-    for (int i = 0; i < MAX_LINHAS - 8; i++)
-    {
-        for (int j = 0; mapa[i][j] != '\0'; j++)
-        {
             if (mapa[i][j] == '@')
             {
                 py = i;
@@ -41,180 +55,222 @@ void ghost()
         }
     }
 
-    // Calcula a nova posição do fantasma com base na posição do pacman
-    int ny = py, nx = px;
-    if (py < py_pacman)
+    if ((py_pacman - 1 == py && px_pacman == px) ||
+        (py_pacman + 1 == py && px_pacman == px) ||
+        (py_pacman == py && px_pacman - 1 == px) ||
+        (py_pacman == py && px_pacman + 1 == px))
     {
-        if (mapa[py + 1][px] != '#') // Se o estado para onde quero ir não for uma parede
-        {
-            ny = py + 1;
-            // Se o estado para onde quero ir for habitavel:
-            // ele recebe meu valor[x]
-            // e o meu estado atual vai receber o valor anterior(antes de eu habita-lo)[x]
-
-            // a posição onde o fantasma vai habitar recebe o valor do fantasma
-            mapa[ny][px] = '@';
-            // a posição onde o fantasma habita vai receber o valor anterior(antes de dele habita-lo)
-            // Se o fantasma já tinha uma posição anterior, atualiza a posição anterior
-            if (py_anterior != -1 && px_anterior != -1)
-            {
-                mapa[py][px] = mapa[py_anterior][px_anterior];
-            }
-            else
-            {
-                // Se não, apenas limpa a posição atual do fantasma
-                mapa[py][px] = ' ';
-            }
-            // Atualiza a posição anterior do fantasma
-            py_anterior = ny;
-            px_anterior = px;
-        }
-        else
-        {
-            // Se o estado para onde quero ir for uma parede, executa a lógica para calcular a nova rota
-            // EXEMPLO: Se o fantasma não puder se mover para baixo, tenta mover para cima
-        }
-    }
-    else if (py > py_pacman)
-    {
-        if (mapa[py - 1][px] != '#') // Se o estado para onde quero ir não for uma parede
-        {
-            ny = py - 1;
-            // Se o estado para onde quero ir for habitavel:
-            // ele recebe meu valor[x]
-            // e o meu estado atual vai receber o valor anterior(antes de eu habita-lo)[x]
-
-            // a posição onde o fantasma vai habitar recebe o valor do fantasma
-            mapa[ny][px] = '@';
-            // a posição onde o fantasma habita vai receber o valor anterior(antes de dele habita-lo)
-            // Se o fantasma já tinha uma posição anterior, atualiza a posição anterior
-            if (py_anterior != -1 && px_anterior != -1)
-            {
-                mapa[py][px] = mapa[py_anterior][px_anterior];
-            }
-            else
-            {
-                // Se não, apenas limpa a posição atual do fantasma
-                mapa[py][px] = ' ';
-            }
-            // Atualiza a posição anterior do fantasma
-            py_anterior = ny;
-            px_anterior = px;
-        }
-        else
-        {
-            // Se o estado para onde quero ir for uma parede, executa a lógica para calcular a nova rota
-            // EXEMPLO: Se o fantasma não puder se mover para baixo, tenta mover para cima
-        }
-    }
-    if (px < px_pacman)
-    {
-        if (mapa[py][px + 1] != '#') // Se o estado para onde quero ir não for uma parede
-        {
-            ny = px + 1;
-            // Se o estado para onde quero ir for habitavel:
-            // ele recebe meu valor[x]
-            // e o meu estado atual vai receber o valor anterior(antes de eu habita-lo)[x]
-
-            // a posição onde o fantasma vai habitar recebe o valor do fantasma
-            mapa[ny][px] = '@';
-            // a posição onde o fantasma habita vai receber o valor anterior(antes de dele habita-lo)
-            // Se o fantasma já tinha uma posição anterior, atualiza a posição anterior
-            if (py_anterior != -1 && px_anterior != -1)
-            {
-                mapa[py][px] = mapa[py_anterior][px_anterior];
-            }
-            else
-            {
-                // Se não, apenas limpa a posição atual do fantasma
-                mapa[py][px] = ' ';
-            }
-            // Atualiza a posição anterior do fantasma
-            py_anterior = ny;
-            px_anterior = px;
-        }
-        else
-        {
-            // Se o estado para onde quero ir for uma parede, executa a lógica para calcular a nova rota
-            // EXEMPLO: Se o fantasma não puder se mover para baixo, tenta mover para cima
-        }
-    }
-    else if (px > px_pacman)
-    {
-        if (mapa[py][px - 1] != '#') // Se o estado para onde quero ir não for uma parede
-        {
-            ny = px - 1;
-            // Se o estado para onde quero ir for habitavel:
-            // ele recebe meu valor[x]
-            // e o meu estado atual vai receber o valor anterior(antes de eu habita-lo)[x]
-
-            // a posição onde o fantasma vai habitar recebe o valor do fantasma
-            mapa[ny][px] = '@';
-            // a posição onde o fantasma habita vai receber o valor anterior(antes de dele habita-lo)
-            // Se o fantasma já tinha uma posição anterior, atualiza a posição anterior
-            if (py_anterior != -1 && px_anterior != -1)
-            {
-                mapa[py][px] = mapa[py_anterior][px_anterior];
-            }
-            else
-            {
-                // Se não, apenas limpa a posição atual do fantasma
-                mapa[py][px] = ' ';
-            }
-            // Atualiza a posição anterior do fantasma
-            py_anterior = ny;
-            px_anterior = px;
-        }
-        else
-        {
-            // Se o estado para onde quero ir for uma parede, executa a lógica para calcular a nova rota
-            // EXEMPLO: Se o fantasma não puder se mover para baixo, tenta mover para cima
-        }
-    }
-}
-void ghost_move()
-{
-    // Lógica para mover o fantasma
-    // Aqui você pode implementar a lógica de movimento do fantasma
-    // Por exemplo, mover o fantasma em direção ao pacman
-    // ou de forma aleatória
-    int ny = py, nx = px;
-
-    switch (mapa[ny][nx])
-    {
-    case '#':
-        // Pare o movimento se bater na parede
-        break;
-    case ' ':
-        mapa[ny][nx] = '@';
         mapa[py][px] = ' ';
-        break;
-    case '.':
-        mapa[ny][nx] = '@';
-        mapa[py][px] = '.';
-        break;
-    case 'o':
-        mapa[ny][nx] = '@';
-        mapa[py][px] = 'o';
-        break;
-    case '@':
-        mapa[ny][nx] = '@';
-        mapa[py][px] = '@';
-        break;
-    default:
-        // Se for outra coisa, pare o movimento para evitar bugs
-        break;
+        py = -1;
+        px = -1;
+        return;
     }
+
+    int dy[] = {1, -1, 0, 0};
+    int dx[] = {0, 0, 1, -1};
+    int max_dist = -1;
+    int melhor_py = py, melhor_px = px;
+
+    for (int i = 0; i < 4; i++)
+    {
+        int novo_py = py + dy[i];
+        int novo_px = px + dx[i];
+
+        if (mapa[novo_py][novo_px] != '#' && mapa[novo_py][novo_px] != '@')
+        {
+            int dist = abs(py_pacman - novo_py) + abs(px_pacman - novo_px);
+            if (dist > max_dist)
+            {
+                max_dist = dist;
+                melhor_py = novo_py;
+                melhor_px = novo_px;
+            }
+        }
+    }
+
+    if (melhor_py != py || melhor_px != px)
+        ghost_move(melhor_py, melhor_px);
 }
-void pink()
-{
-}
+
 void red()
 {
+    for (int i = 0; i < MAX_LINHAS - 8; i++)
+    {
+        for (int j = 0; mapa[i][j] != '\0'; j++)
+        {
+            if (mapa[i][j] == 'C')
+            {
+                py_pacman = i;
+                px_pacman = j;
+            }
+            if (mapa[i][j] == '@')
+            {
+                py = i;
+                px = j;
+            }
+        }
+    }
+
+    if ((py_pacman - 1 == py && px_pacman == px) ||
+        (py_pacman + 1 == py && px_pacman == px) ||
+        (py_pacman == py && px_pacman - 1 == px) ||
+        (py_pacman == py && px_pacman + 1 == px))
+    {
+        game_over();
+    }
+
+    int dy[] = {1, -1, 0, 0};
+    int dx[] = {0, 0, 1, -1};
+
+    int dist_y = py_pacman - py;
+    int dist_x = px_pacman - px;
+
+    int prioridade[4], idx = 0;
+
+    if (abs(dist_y) >= abs(dist_x))
+    {
+        if (dist_y > 0)
+            prioridade[idx++] = 0;
+        else if (dist_y < 0)
+            prioridade[idx++] = 1;
+
+        if (dist_x > 0)
+            prioridade[idx++] = 2;
+        else if (dist_x < 0)
+            prioridade[idx++] = 3;
+    }
+    else
+    {
+        if (dist_x > 0)
+            prioridade[idx++] = 2;
+        else if (dist_x < 0)
+            prioridade[idx++] = 3;
+
+        if (dist_y > 0)
+            prioridade[idx++] = 0;
+        else if (dist_y < 0)
+            prioridade[idx++] = 1;
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        bool existe = false;
+        for (int j = 0; j < idx; j++)
+            if (prioridade[j] == i)
+                existe = true;
+        if (!existe)
+            prioridade[idx++] = i;
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        int dir = prioridade[i];
+        int novo_py = py + dy[dir];
+        int novo_px = px + dx[dir];
+        if (mapa[novo_py][novo_px] != '#' && mapa[novo_py][novo_px] != '@')
+        {
+            ghost_move(novo_py, novo_px);
+            break;
+        }
+    }
 }
-void cyan()
+
+void pink()
+{
+    for (int i = 0; i < MAX_LINHAS - 8; i++)
+    {
+        for (int j = 0; mapa[i][j] != '\0'; j++)
+        {
+            if (mapa[i][j] == 'C')
+            {
+                py_pacman = i;
+                px_pacman = j;
+            }
+            if (mapa[i][j] == '@')
+            {
+                py = i;
+                px = j;
+            }
+        }
+    }
+
+    if ((py_pacman - 1 == py && px_pacman == px) ||
+        (py_pacman + 1 == py && px_pacman == px) ||
+        (py_pacman == py && px_pacman - 1 == px) ||
+        (py_pacman == py && px_pacman + 1 == px))
+    {
+        game_over();
+    }
+
+    int dy[] = {1, -1, 0, 0};
+    int dx[] = {0, 0, 1, -1};
+
+    int target_y = py_pacman;
+    int target_x = px_pacman;
+
+    int diff_y = py_pacman - py;
+    int diff_x = px_pacman - px;
+
+    if (abs(diff_y) > abs(diff_x))
+        target_y += (diff_y > 0) ? 2 : -2;
+    else
+        target_x += (diff_x > 0) ? 2 : -2;
+
+    int prioridade[4], idx = 0;
+    int dist_y = target_y - py;
+    int dist_x = target_x - px;
+
+    if (abs(dist_y) >= abs(dist_x))
+    {
+        if (dist_y > 0)
+            prioridade[idx++] = 0;
+        else if (dist_y < 0)
+            prioridade[idx++] = 1;
+
+        if (dist_x > 0)
+            prioridade[idx++] = 2;
+        else if (dist_x < 0)
+            prioridade[idx++] = 3;
+    }
+    else
+    {
+        if (dist_x > 0)
+            prioridade[idx++] = 2;
+        else if (dist_x < 0)
+            prioridade[idx++] = 3;
+
+        if (dist_y > 0)
+            prioridade[idx++] = 0;
+        else if (dist_y < 0)
+            prioridade[idx++] = 1;
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        bool existe = false;
+        for (int j = 0; j < idx; j++)
+            if (prioridade[j] == i)
+                existe = true;
+        if (!existe)
+            prioridade[idx++] = i;
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        int dir = prioridade[i];
+        int novo_py = py + dy[dir];
+        int novo_px = px + dx[dir];
+        if (mapa[novo_py][novo_px] != '#' && mapa[novo_py][novo_px] != '@')
+        {
+            ghost_move(novo_py, novo_px);
+            break;
+        }
+    }
+}
+
+cyan()
 {
 }
-void orange()
+orange()
 {
 }

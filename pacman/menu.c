@@ -16,8 +16,18 @@
 #define GREEN "\033[0;32m"
 #define RED "\x1b[31m"
 
+int playng_sound = 0; // Variável para controlar o som
+
 void menu()
 {
+    if (playng_sound == 0)
+    {
+        // Toca o som de forma ass�ncrona (continua executando o resto do c�digo)
+        PlaySound("./playing-pac-man.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        playng_sound = 1; // Define a variável como 1 para indicar que o som está tocando
+    }
+
+    bool_game_over = 1; // Define game_over como verdadeiro para que o jogo inicie
     char menu[MAX_COLUNAS][MAX_LINHAS];
 
     FILE *arquivo_menu;
@@ -60,6 +70,7 @@ void menu()
 
     printf(RED);
     printf("\n\tAVISO: JOGE EM TELA CHEIA PARA EVITAR BUGS!\n\n");
+    printf(GREEN); // Para voltar ao normal
 
     char opcao;
 
@@ -69,6 +80,7 @@ void menu()
     case '1':
         // Para a música
         PlaySound(NULL, 0, 0);
+        playng_sound = 0;
         system("cls"); // Limpa a tela (Windows)
         start_game();
         break;
@@ -107,7 +119,8 @@ void instruct()
     printf("Pressione qualquer tecla para voltar ao menu...\n");
     getch();       // Aguarda a tecla pressionada
     system("cls"); // Limpa a tela (Windows)
-    menu();        // Chama a fun��o menu novamente
+    playng_sound = 1;
+    menu(); // Chama a fun��o menu novamente
 }
 void open_ranking(int pontuacao)
 {
@@ -116,5 +129,6 @@ void open_ranking(int pontuacao)
     printf("\nPressione qualquer tecla para voltar ao menu...\n");
     getch();       // Aguarda a tecla pressionada
     system("cls"); // Limpa a tela (Windows)
-    menu();        // Chama a fun��o menu novamente
+    playng_sound = 1;
+    menu(); // Chama a fun��o menu novamente
 }
