@@ -94,15 +94,19 @@ void ghost_escape()
 
 void red()
 {
+    // Laço para percorrer as linhas do mapa (limitadas por MAX_LINHAS - 8)
     for (int i = 0; i < MAX_LINHAS - 8; i++)
     {
+        // Laço para percorrer as colunas da linha atual até o fim da string
         for (int j = 0; mapa[i][j] != '\0'; j++)
         {
+            // Se encontrar o Pac-Man ('C'), armazena sua posição
             if (mapa[i][j] == 'C')
             {
                 py_pacman = i;
                 px_pacman = j;
             }
+            // Se encontrar o fantasma vermelho ('@'), armazena sua posição
             if (mapa[i][j] == '@')
             {
                 py = i;
@@ -111,47 +115,54 @@ void red()
         }
     }
 
+    // Verifica se o fantasma está em uma posição adjacente ao Pac-Man
     if ((py_pacman - 1 == py && px_pacman == px) ||
         (py_pacman + 1 == py && px_pacman == px) ||
         (py_pacman == py && px_pacman - 1 == px) ||
         (py_pacman == py && px_pacman + 1 == px))
     {
-        game_over();
+        game_over(); // Pac-Man foi alcançado: fim de jogo
     }
 
+    // Vetores de direção: baixo, cima, direita, esquerda
     int dy[] = {1, -1, 0, 0};
     int dx[] = {0, 0, 1, -1};
 
+    // Calcula a distância entre o fantasma e o Pac-Man
     int dist_y = py_pacman - py;
     int dist_x = px_pacman - px;
 
     int prioridade[4], idx = 0;
 
+    // Define a prioridade de movimentação baseada na maior distância
     if (abs(dist_y) >= abs(dist_x))
     {
+        // Prioriza movimentos verticais
         if (dist_y > 0)
-            prioridade[idx++] = 0;
+            prioridade[idx++] = 0; // Baixo
         else if (dist_y < 0)
-            prioridade[idx++] = 1;
+            prioridade[idx++] = 1; // Cima
 
         if (dist_x > 0)
-            prioridade[idx++] = 2;
+            prioridade[idx++] = 2; // Direita
         else if (dist_x < 0)
-            prioridade[idx++] = 3;
+            prioridade[idx++] = 3; // Esquerda
     }
     else
     {
+        // Prioriza movimentos horizontais
         if (dist_x > 0)
-            prioridade[idx++] = 2;
+            prioridade[idx++] = 2; // Direita
         else if (dist_x < 0)
-            prioridade[idx++] = 3;
+            prioridade[idx++] = 3; // Esquerda
 
         if (dist_y > 0)
-            prioridade[idx++] = 0;
+            prioridade[idx++] = 0; // Baixo
         else if (dist_y < 0)
-            prioridade[idx++] = 1;
+            prioridade[idx++] = 1; // Cima
     }
 
+    // Preenche as direções restantes com prioridade menor
     for (int i = 0; i < 4; i++)
     {
         bool existe = false;
@@ -162,115 +173,29 @@ void red()
             prioridade[idx++] = i;
     }
 
+    // Tenta mover o fantasma na direção de maior prioridade possível
     for (int i = 0; i < 4; i++)
     {
         int dir = prioridade[i];
         int novo_py = py + dy[dir];
         int novo_px = px + dx[dir];
+
+        // Verifica se a nova posição não é uma parede ou outro fantasma
         if (mapa[novo_py][novo_px] != '#' && mapa[novo_py][novo_px] != '@')
         {
-            ghost_move(novo_py, novo_px);
-            break;
+            ghost_move(novo_py, novo_px); // Move o fantasma
+            break;                        // Move uma única vez por chamada
         }
     }
 }
 
 void pink()
 {
-    for (int i = 0; i < MAX_LINHAS - 8; i++)
-    {
-        for (int j = 0; mapa[i][j] != '\0'; j++)
-        {
-            if (mapa[i][j] == 'C')
-            {
-                py_pacman = i;
-                px_pacman = j;
-            }
-            if (mapa[i][j] == '@')
-            {
-                py = i;
-                px = j;
-            }
-        }
-    }
-
-    if ((py_pacman - 1 == py && px_pacman == px) ||
-        (py_pacman + 1 == py && px_pacman == px) ||
-        (py_pacman == py && px_pacman - 1 == px) ||
-        (py_pacman == py && px_pacman + 1 == px))
-    {
-        game_over();
-    }
-
-    int dy[] = {1, -1, 0, 0};
-    int dx[] = {0, 0, 1, -1};
-
-    int target_y = py_pacman;
-    int target_x = px_pacman;
-
-    int diff_y = py_pacman - py;
-    int diff_x = px_pacman - px;
-
-    if (abs(diff_y) > abs(diff_x))
-        target_y += (diff_y > 0) ? 2 : -2;
-    else
-        target_x += (diff_x > 0) ? 2 : -2;
-
-    int prioridade[4], idx = 0;
-    int dist_y = target_y - py;
-    int dist_x = target_x - px;
-
-    if (abs(dist_y) >= abs(dist_x))
-    {
-        if (dist_y > 0)
-            prioridade[idx++] = 0;
-        else if (dist_y < 0)
-            prioridade[idx++] = 1;
-
-        if (dist_x > 0)
-            prioridade[idx++] = 2;
-        else if (dist_x < 0)
-            prioridade[idx++] = 3;
-    }
-    else
-    {
-        if (dist_x > 0)
-            prioridade[idx++] = 2;
-        else if (dist_x < 0)
-            prioridade[idx++] = 3;
-
-        if (dist_y > 0)
-            prioridade[idx++] = 0;
-        else if (dist_y < 0)
-            prioridade[idx++] = 1;
-    }
-
-    for (int i = 0; i < 4; i++)
-    {
-        bool existe = false;
-        for (int j = 0; j < idx; j++)
-            if (prioridade[j] == i)
-                existe = true;
-        if (!existe)
-            prioridade[idx++] = i;
-    }
-
-    for (int i = 0; i < 4; i++)
-    {
-        int dir = prioridade[i];
-        int novo_py = py + dy[dir];
-        int novo_px = px + dx[dir];
-        if (mapa[novo_py][novo_px] != '#' && mapa[novo_py][novo_px] != '@')
-        {
-            ghost_move(novo_py, novo_px);
-            break;
-        }
-    }
 }
 
-cyan()
+void cyan()
 {
 }
-orange()
+void orange()
 {
 }

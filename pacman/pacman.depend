@@ -122,7 +122,7 @@
 
 1748032206 c:\users\pedro\onedrive\documentos\pac_man_c\pacman\game.h
 
-1748033717 c:\users\pedro\onedrive\documentos\pac_man_c\pacman\ghost.h
+1748050606 c:\users\pedro\onedrive\documentos\pac_man_c\pacman\ghost.h
 
 1748032149 source:c:\users\pedro\onedrive\documentos\pac_man_c\pacman\pacman.c
 	<stdio.h>
@@ -133,7 +133,7 @@
 	"ghost.h"
 	"game.h"
 
-1748034012 source:c:\users\pedro\onedrive\documentos\pac_man_c\pacman\game.c
+1748050473 source:c:\users\pedro\onedrive\documentos\pac_man_c\pacman\game.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
